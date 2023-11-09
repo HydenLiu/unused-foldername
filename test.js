@@ -1,51 +1,51 @@
 import path from 'node:path';
 import test from 'ava';
-import {unusedFilename, unusedFilenameSync, separatorIncrementer, MaxTryError} from './index.js';
+import {unusedFoldername, unusedFoldernameSync, separatorIncrementer, MaxTryError} from './index.js';
 
-const fixturePath = file => path.join('fixtures', file);
+const fixturePath = folder => path.join('fixtures', folder);
 const underscore = {incrementer: separatorIncrementer('_')};
 const dash = {incrementer: separatorIncrementer('-')};
 
 test('async', async t => {
-	t.is(await unusedFilename(fixturePath('noop.txt')), fixturePath('noop.txt'));
-	t.is(await unusedFilename(fixturePath('unicorn.txt')), fixturePath('unicorn (1).txt'));
-	t.is(await unusedFilename(fixturePath('rainbow.txt')), fixturePath('rainbow (3).txt'));
+	t.is(await unusedFoldername(fixturePath('noop')), fixturePath('noop'));
+	t.is(await unusedFoldername(fixturePath('unicorn')), fixturePath('unicorn (1)'));
+	t.is(await unusedFoldername(fixturePath('rainbow')), fixturePath('rainbow (3)'));
 });
 
 test('async - maxTries option', async t => {
 	const error = await t.throwsAsync(async () => {
-		await unusedFilename(fixturePath('rainbow (1).txt'), {maxTries: 1});
+		await unusedFoldername(fixturePath('rainbow (1)'), {maxTries: 1});
 	}, {instanceOf: MaxTryError});
 
-	t.is(error.originalPath, fixturePath('rainbow.txt'));
-	t.is(error.lastTriedPath, fixturePath('rainbow (2).txt'));
+	t.is(error.originalPath, fixturePath('rainbow'));
+	t.is(error.lastTriedPath, fixturePath('rainbow (2)'));
 });
 
 test('async - incrementer option', async t => {
-	t.is(await unusedFilename(fixturePath('noop.txt'), underscore), fixturePath('noop.txt'));
-	t.is(await unusedFilename(fixturePath('unicorn.txt'), underscore), fixturePath('unicorn_1.txt'));
-	t.is(await unusedFilename(fixturePath('rainbow.txt'), underscore), fixturePath('rainbow_3.txt'));
-	t.is(await unusedFilename(fixturePath('rainbow.txt'), dash), fixturePath('rainbow-2.txt'));
+	t.is(await unusedFoldername(fixturePath('noop'), underscore), fixturePath('noop'));
+	t.is(await unusedFoldername(fixturePath('unicorn'), underscore), fixturePath('unicorn_1'));
+	t.is(await unusedFoldername(fixturePath('rainbow'), underscore), fixturePath('rainbow_3'));
+	t.is(await unusedFoldername(fixturePath('rainbow'), dash), fixturePath('rainbow-2'));
 });
 
 test('sync', t => {
-	t.is(unusedFilenameSync(fixturePath('noop.txt')), fixturePath('noop.txt'));
-	t.is(unusedFilenameSync(fixturePath('unicorn.txt')), fixturePath('unicorn (1).txt'));
-	t.is(unusedFilenameSync(fixturePath('rainbow.txt')), fixturePath('rainbow (3).txt'));
+	t.is(unusedFoldernameSync(fixturePath('noop')), fixturePath('noop'));
+	t.is(unusedFoldernameSync(fixturePath('unicorn')), fixturePath('unicorn (1)'));
+	t.is(unusedFoldernameSync(fixturePath('rainbow')), fixturePath('rainbow (3)'));
 });
 
 test('sync - maxTries option', t => {
 	const error = t.throws(() => {
-		unusedFilenameSync(fixturePath('rainbow (1).txt'), {maxTries: 1});
+		unusedFoldernameSync(fixturePath('rainbow (1)'), {maxTries: 1});
 	}, {instanceOf: MaxTryError});
 
-	t.is(error.originalPath, fixturePath('rainbow.txt'));
-	t.is(error.lastTriedPath, fixturePath('rainbow (2).txt'));
+	t.is(error.originalPath, fixturePath('rainbow'));
+	t.is(error.lastTriedPath, fixturePath('rainbow (2)'));
 });
 
 test('sync - incrementer option', t => {
-	t.is(unusedFilenameSync(fixturePath('noop.txt'), underscore), fixturePath('noop.txt'));
-	t.is(unusedFilenameSync(fixturePath('unicorn.txt'), underscore), fixturePath('unicorn_1.txt'));
-	t.is(unusedFilenameSync(fixturePath('rainbow.txt'), underscore), fixturePath('rainbow_3.txt'));
-	t.is(unusedFilenameSync(fixturePath('rainbow.txt'), dash), fixturePath('rainbow-2.txt'));
+	t.is(unusedFoldernameSync(fixturePath('noop'), underscore), fixturePath('noop'));
+	t.is(unusedFoldernameSync(fixturePath('unicorn'), underscore), fixturePath('unicorn_1'));
+	t.is(unusedFoldernameSync(fixturePath('rainbow'), underscore), fixturePath('rainbow_3'));
+	t.is(unusedFoldernameSync(fixturePath('rainbow'), dash), fixturePath('rainbow-2'));
 });

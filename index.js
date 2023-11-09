@@ -10,34 +10,33 @@ export class MaxTryError extends Error {
 	}
 }
 
-const parenthesesIncrementer = (inputFilename, extension) => {
-	const match = inputFilename.match(/^(?<filename>.*)\((?<index>\d+)\)$/);
-	let {filename, index} = match ? match.groups : {filename: inputFilename, index: 0};
-	filename = filename.trim();
-	return [`${filename}${extension}`, `${filename} (${++index})${extension}`];
+const parenthesesIncrementer = inputFoldername => {
+	const match = inputFoldername.match(/^(?<foldername>.*)\((?<index>\d+)\)$/);
+	let {foldername, index} = match ? match.groups : {foldername: inputFoldername, index: 0};
+	foldername = foldername.trim();
+	return [`${foldername}`, `${foldername} (${++index})`];
 };
 
-const incrementPath = (filePath, incrementer) => {
-	const ext = path.extname(filePath);
-	const dirname = path.dirname(filePath);
-	const [originalFilename, incrementedFilename] = incrementer(path.basename(filePath, ext), ext);
-	return [path.join(dirname, originalFilename), path.join(dirname, incrementedFilename)];
+const incrementPath = (folderPath, incrementer) => {
+	const dirname = path.dirname(folderPath);
+	const [originalFoldername, incrementedFoldername] = incrementer(path.basename(folderPath));
+	return [path.join(dirname, originalFoldername), path.join(dirname, incrementedFoldername)];
 };
 
 export const separatorIncrementer = separator => {
 	const escapedSeparator = escapeStringRegexp(separator);
 
-	return (inputFilename, extension) => {
-		const match = new RegExp(`^(?<filename>.*)${escapedSeparator}(?<index>\\d+)$`).exec(inputFilename);
-		let {filename, index} = match ? match.groups : {filename: inputFilename, index: 0};
-		return [`${filename}${extension}`, `${filename.trim()}${separator}${++index}${extension}`];
+	return inputFoldername => {
+		const match = new RegExp(`^(?<foldername>.*)${escapedSeparator}(?<index>\\d+)$`).exec(inputFoldername);
+		let {foldername, index} = match ? match.groups : {foldername: inputFoldername, index: 0};
+		return [`${foldername}`, `${foldername.trim()}${separator}${++index}`];
 	};
 };
 
-export async function unusedFilename(filePath, {incrementer = parenthesesIncrementer, maxTries = Number.POSITIVE_INFINITY} = {}) {
+export async function unusedFoldername(folderPath, {incrementer = parenthesesIncrementer, maxTries = Number.POSITIVE_INFINITY} = {}) {
 	let tries = 0;
-	let [originalPath] = incrementPath(filePath, incrementer);
-	let unusedPath = filePath;
+	let [originalPath] = incrementPath(folderPath, incrementer);
+	let unusedPath = folderPath;
 
 	/* eslint-disable no-await-in-loop, no-constant-condition */
 	while (true) {
@@ -54,10 +53,10 @@ export async function unusedFilename(filePath, {incrementer = parenthesesIncreme
 	/* eslint-enable no-await-in-loop, no-constant-condition */
 }
 
-export function unusedFilenameSync(filePath, {incrementer = parenthesesIncrementer, maxTries = Number.POSITIVE_INFINITY} = {}) {
+export function unusedFoldernameSync(folderPath, {incrementer = parenthesesIncrementer, maxTries = Number.POSITIVE_INFINITY} = {}) {
 	let tries = 0;
-	let [originalPath] = incrementPath(filePath, incrementer);
-	let unusedPath = filePath;
+	let [originalPath] = incrementPath(folderPath, incrementer);
+	let unusedPath = folderPath;
 
 	/* eslint-disable no-constant-condition */
 	while (true) {

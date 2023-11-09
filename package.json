@@ -1,14 +1,13 @@
 {
-	"name": "unused-filename",
-	"version": "4.0.1",
-	"description": "Get an unused filename by appending a number if it exists: `file.txt` → `file (1).txt`",
+	"name": "unused-foldername",
+	"version": "0.0.1",
+	"description": "Get an unused foldername by appending a number if it exists: `folder` → `folder (1)`",
 	"license": "MIT",
-	"repository": "sindresorhus/unused-filename",
-	"funding": "https://github.com/sponsors/sindresorhus",
+	"repository": "HydenLiu/unused-foldername",
+	"funding": "https://github.com/HydenLiu",
 	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "https://sindresorhus.com"
+		"name": "HydenLiu",
+		"email": "hydenliu518@gmail.com"
 	},
 	"type": "module",
 	"exports": "./index.js",
@@ -24,9 +23,9 @@
 	],
 	"keywords": [
 		"unused",
-		"filename",
-		"filepath",
-		"file",
+		"foldername",
+		"folderpath",
+		"folder",
 		"name",
 		"available",
 		"safe",
@@ -43,7 +42,7 @@
 	},
 	"devDependencies": {
 		"ava": "^3.15.0",
-		"tsd": "^0.19.0",
-		"xo": "^0.46.4"
+		"tsd": "^0.29.0",
+		"xo": "^0.56.0"
 	}
 }

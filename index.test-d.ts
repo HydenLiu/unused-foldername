@@ -1,8 +1,8 @@
 import {expectType} from 'tsd';
-import {unusedFilename, unusedFilenameSync, MaxTryError} from './index.js';
+import {unusedFoldername, unusedFoldernameSync, MaxTryError} from './index.js';
 
-expectType<Promise<string>>(unusedFilename('rainbow.txt'));
-expectType<string>(unusedFilenameSync('rainbow.txt'));
+expectType<Promise<string>>(unusedFoldername('rainbow'));
+expectType<string>(unusedFoldernameSync('rainbow'));
 
 let error: unknown;
 if (error instanceof MaxTryError) {
