@@ -134,4 +134,4 @@ try {
 ## Related
 
 - [unused-filename](https://github.com/sindresorhus/unused-filename) - Get an unused filename by appending a number if it exists: `file.txt` → `file (1).txt`
-- [filenamify](https://github.com/sindresorhus/filenamify) - Convert a string to a valid safe foldername
+- [filenamify](https://github.com/sindresorhus/filenamify) - Convert a string to a valid safe filename
